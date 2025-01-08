@@ -31,7 +31,7 @@ The latest generation of motion capture software supports Perception Neuron Stud
 cd ~/catkin/
 catkin_make
 source  devel/setup.bash
-roslaunch  galbot_one_charlie_description view_robot.launch
+roslaunch  demo view_robot.launch
 ~~~
 
 
@@ -43,7 +43,7 @@ roslaunch  galbot_one_charlie_description view_robot.launch
 ~~~
 colcon build
 source  install/setup.bash
-ros2  bytedance_description view_urdf.launch.py
+ros2  demo view_robot.launch.py
 ~~~
 
 
