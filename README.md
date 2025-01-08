@@ -21,7 +21,7 @@ The latest generation of motion capture software supports Perception Neuron Stud
 
    
 
-![as_setting](E:\2024Work\ros\mocap_ros\img\as_setting.png)
+[![img](https://github.com/pnmocap/ros/blob/main/img/as_setting.png)](https://github.com/pnmocap/ros/blob/main/img/as_setting.png)
 
 ### URDF configuration
 
