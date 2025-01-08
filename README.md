@@ -2,7 +2,7 @@
 
 ### Axis Studio configuration
 
-The latest generation of motion capture software supports Perception Neuron Studio and Perception Neuron3 (Pro) motion capture products. Click the '[Download](https://shop.noitom.com.cn/common/product_item/index.jhtml?productItemId=5)' button below to obtain the software installation package program.
+The latest generation of motion capture software supports Perception Neuron Studio and Perception Neuron3 (Pro) motion capture products. Click the '[Download](https://shopcdn.noitom.com.cn/software/9d68e93a50424cac8fbc6d6c9e5bd3da/Axis_Studio_nacs_x64_2_12_13808_2521_20241209183103543.zip)' button below to obtain the software installation package program.
 
 1. Launch *Axis Studio*, Open a sample motion file
 
@@ -19,9 +19,9 @@ The latest generation of motion capture software supports Perception Neuron Stud
    - Local Address: **192.168.2.40:7001**
    - Destination Address: **192.168.2.150:7012**
 
-   ![as_setting](file:////192.168.2.129/rd_bj/Projects/RDL_Projects/RDL_URDF/release/doc/img/as_setting.png?lastModify=1736145785)
+   
 
-
+![as_setting](E:\2024Work\ros\mocap_ros\img\as_setting.png)
 
 ### URDF configuration
 
@@ -64,9 +64,17 @@ This directory contains motion driver programs for humanoid robot manufacturers.
 
 2. Run Python script
 
-~~~
-python3 robot_api_ros<x>.py
-~~~
+   - ROS1
+
+     ~~~
+     python3 robot_api_ros1.py
+     ~~~
+
+   - ROS2
+
+     ~~~
+     python3 robot_api_ros2.py
+     ~~~
 
 > At this point, you will see that the 3D model in the Axis Studio software and the model in the robot window are moving in sync.
 
