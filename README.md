@@ -2,6 +2,8 @@
 
 ### Axis Studio configuration
 
+The latest generation of motion capture software supports Perception Neuron Studio and Perception Neuron3 (Pro) motion capture products. Click the '[Download](https://shop.noitom.com.cn/common/product_item/index.jhtml?productItemId=5)' button below to obtain the software installation package program.
+
 1. Launch *Axis Studio*, Open a sample motion file
 
    [![img](https://github.com/pnmocap/neuron_mocap_live-c4d/raw/main/resource/launch_axis_studio.gif)](https://github.com/pnmocap/neuron_mocap_live-c4d/blob/main/resource/launch_axis_studio.gif)
