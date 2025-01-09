@@ -28,10 +28,14 @@ The latest generation of motion capture software supports Perception Neuron Stud
 1. ROS1
 
 ~~~
-cd ~/catkin/
+mkdir -p ~/catkin_noitom/src
+mv noitom_demo/ ~/catkin_noitom/src
+cd ~/catkin_noitom/src
+catkin_init_workspace
+cd  ../
 catkin_make
 source  devel/setup.bash
-roslaunch  demo view_robot.launch
+roslaunch  noitom_demo view_robot.launch
 ~~~
 
 
@@ -41,9 +45,10 @@ roslaunch  demo view_robot.launch
 2. ROS2
 
 ~~~
+cd  /noitom_demo
 colcon build
 source  install/setup.bash
-ros2  demo view_robot.launch.py
+ros2  noitom_demo view_robot.launch.py
 ~~~
 
 
