@@ -17,7 +17,7 @@ The latest generation of motion capture software supports Perception Neuron Stud
    - Frame Format - Use old header format: **Unchecked**
    - Protocol: **UDP**
    - Local Address: **192.168.2.40:7001**
-   - Destination Address: **192.168.2.150:7012**
+   - Destination Address: **192.168.2.147:7012**
 
    
 
