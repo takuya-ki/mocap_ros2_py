@@ -19,8 +19,7 @@ The latest generation of motion capture software supports Perception Neuron Stud
    - Local Address: **192.168.2.40:7001**
    - Destination Address: **192.168.2.147:7012**
 
-   
-[![img](https://github.com/pnmocap/mocap_ros/blob/master/img/as_setting.png)](https://github.com/pnmocap/mocap_ros/blob/master/img/as_setting.png)
+[![img](https://github.com/pnmocap/neuron_mocap_live-blender/blob/main/img/stream_04.png)](https://github.com/pnmocap/neuron_mocap_live-blender/blob/main/img/stream_04.png)
 
 ### URDF configuration
 
