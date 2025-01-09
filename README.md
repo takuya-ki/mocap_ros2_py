@@ -58,7 +58,8 @@ This directory contains motion driver programs for humanoid robot manufacturers.
 
 - lib/: This folder includes dynamic libraries of robotapi for various CPU architectures. The library is responsible for interfacing with motion capture devices to obtain motion data and converting it into URDF format data.
 - retarget.json: A JSON file used for conversion specific to each robot manufacturer and model.
-- robot_api_ros\<x\>.py: A Python script that starts up, calls the robotapi library, reads the retarget.json file, and uses ROS interfaces to drive the robot.
+- robot_api_ros1.py: A Python script that starts up, calls the robotapi library, reads the retarget.json file, and uses ROS1 interfaces to drive the robot.
+- robot_api_ros2.py: A Python script that starts up, calls the robotapi library, reads the retarget.json file, and uses ROS2 interfaces to drive the robot.
 
 >Note that the lib folder, Python script, and retarget.json must be in the same directory. When the Python script is launched, it will load the JSON file and the .so files in the lib directory from the current directory.
 
