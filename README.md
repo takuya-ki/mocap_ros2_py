@@ -1,14 +1,83 @@
-## Quick start guide
+# Quick start guide
 
-### Axis Studio configuration
+如果你是第一次接触动捕设备或ROS，下面的一些概念需要了解一下：
+- 动捕设备：是一种可以捕捉人体运动的设备，Noitom公司的动捕设备是Perception Neuron Studio和Perception Neuron3 Pro系列产品。
+- Axis Studio：是Noitom公司提供专业的动捕软件，它跟动捕设备进行通信，并提供可以用来录制、编辑、播放、传输动捕数据。
+- BVH：是一种常用的动捕数据格式，它是一种人体骨骼动作数据格式，可以用来描述人体的骨骼动作。
+- URDF：是一种常用的机器人描述语言，它是一种用来描述机器人模型的语言，可以用来描述机器人各个部件的形状、尺寸、关节等信息。
+- ROS：是Robot Operating System，它是一个开源的机器人操作系统，可以用来驱动机器人，并提供通信、消息传递等功能。
+- ROS1：是ROS的第一个版本，它是ROS的主要版本，目前ROS2已经成为主流版本。
+- ROS2：是ROS的第二个版本，它是ROS的最新版本，它提供了更加灵活的通信机制，可以用来驱动机器人。
+- 火柴人
 
-The latest generation of motion capture software supports Perception Neuron Studio and Perception Neuron3 (Pro) motion capture products. Click the '[Download](https://shopcdn.noitom.com.cn/software/9d68e93a50424cac8fbc6d6c9e5bd3da/Axis_Studio_nacs_x64_2_12_13808_2521_20241209183103543.zip)' button below to obtain the software installation package program.
+本工程将向你展示如何使用从 Axis Studio 获取的动作捕捉数据实时驱动人形机器人或ROS的火柴人，支持ROS1和ROS2环境。
 
-1. Launch *Axis Studio*, Open a sample motion file
+## 前提
+
+- 一台Windows PC，已安装的Axis Studio软件
+- 一台Linux PC，已安装ROS1或ROS2环境
+
+## 目录结构
+
+该工程使用python语言编写，演示了如何调用封装的robotapi库，从Axis Studio获取动捕数据，这些数据是人体的骨骼动作数据，以BVH格式存储。接下来，有两个选择：
+1. 你可以自己解析BVH数据，并将其转换为你自己人形机器人的URDF格式，然后使用ROS1或ROS2驱动它。
+2. 另外，我们也提供了一个URDF文件，你可以直接使用它来看到动作效果。如果你需要适配你自己的机器人，可以直接联系我们（xxx@noitom.com）提供帮助。
+
+针对选择1，为了确保数据的准确性，我们会演示如何把从axis studio获取的数据驱动到ROS平台上的一个人体模型（火柴人），最终的效果是，在axis studio中录制的动作，在ros中驱动的火柴人模型也会跟着动作运动。
+
+在进入下面的步骤之前，我们先了解一下本工程的目录结构
+
+- lib目录: 包含了针对各个CPU架构的librobotapi动态库文件，它提供了接口函数，从Axis Studio获取动捕数据，同时也封装了从BVH数据转换为URDF格式的功能。
+- img目录：包含了本说明文档中用到的图片。
+- urdfdemo_ros1目录：ROS1环境下，包含了用于驱动机器人模型的URDF文件，以及用于驱动机器人模型的URDF文件。
+- urdfdemo_ros2目录：ROS2环境下，包含了用于驱动机器人模型的URDF文件，以及用于驱动机器人模型的URDF文件。
+- README.md：本说明文档。
+- mocap_robotapi.py：封装了librobotapi库，从Axis Studio获取动捕数据，同时提供了BVH数据转换为URDF格式的功能。
+- retarget.json：mocap_robotapi使用它用于转换特定于每个机器人的URDF格式。不同的urdf文件需要不同的retarget.json文件，不建议修改这个文件。
+- mocap_to_robot_ros1.py：针对ROS1环境，做为一个ros node，调用mocap_robotapi库，转换BVH数据为URDF格式，publish 数据类型（JointState）到 topic（/joint_states），以驱动机器人。
+- mocap_to_robot_ros2.py：针对ROS2环境，功能与mocap_to_robot_ros1.py相同
+- mocap_to_stickman_ros1.py：针对ROS1环境，做为一个ros node，调用mocap_robotapi库，将原始BVH数据publish 数据类型（？？？）到 topic（/？？？），以驱动robot的火柴人模型。
+- mocap_to_stickman_ros2.py：针对ROS2环境，功能与mocap_to_stickman_ros1.py相同
+
+## 架构与数据流
+
+架构图如下：
+
+![img](img/robotapi-ros.drawio.png)
+
+## 步骤
+
+1. 首先找一台windows PC，安装好Axis Studio软件，并做好配置。
+2. 其次找一台linux PC，安装好ROS环境。（ROS1或ROS2都可以）
+3. 根据ROS1还是ROS2环境，启动对应的ROS Sim
+4. 根据要驱动的模型是火柴人还是机器人，启动对应的ros node
+
+详细步骤描述如下：
+
+### 1. 下载安装本工程
+
+登录安装了ROS的linux PC，下载本工程并安装依赖包。
+
+```
+cd ~
+git clone https://github.com/pnmocap/mocap_ros.git
+cd mocap_ros
+pip3 install -r requirements.txt
+```
+
+
+### 2. Axis Studio 配置
+
+最新一代的动作捕捉软件支持 Perception Neuron Studio 和 Perception Neuron3（Pro）动作捕捉产品。点击下方的 “[下载](https://shopcdn.noitom.com.cn/software/9d68e93a50424cac8fbc6d6c9e5bd3da/Axis_Studio_nacs_x64_2_12_13808_2521_20241209183103543.zip)” 按钮，获取软件安装包程序。
+
+1. 启动*Axis Studio*, 打开一个动作数据文件
+
+此时能看到Axis Studio里的3D模型在运动，如下图所示：
 
    [![img](https://github.com/pnmocap/neuron_mocap_live-c4d/raw/main/resource/launch_axis_studio.gif)](https://github.com/pnmocap/neuron_mocap_live-c4d/blob/main/resource/launch_axis_studio.gif)
 
-2. Enable *BVH Broadcasting - Edit*, configure the broadcast settings as follows:
+
+2. 使能 *BVH Broadcasting - Edit*, 配置如下图
 
    - Skeleton: **Axis Studio**
    - BVH Format - Rotation: **XYZ**
@@ -19,66 +88,85 @@ The latest generation of motion capture software supports Perception Neuron Stud
    - Local Address: **192.168.2.40:7001**
    - Destination Address: **192.168.2.147:7012**
 
-[![img](https://github.com/pnmocap/neuron_mocap_live-blender/blob/main/img/stream_04.png)](https://github.com/pnmocap/neuron_mocap_live-blender/blob/main/img/stream_04.png)
+[![img](img/stream_04.png)](img/stream_04.png)
 
-### URDF configuration
+> 其中的local address和destination address需要根据实际情况进行修改。
 
-1. ROS1
+### 3. 启动ROS SIM环境
 
-~~~
+无论驱动火柴人模型还是机器人模型，共用的同一套工作空间。
+
+#### ROS1
+
+1. 创建工作空间并make
+
+```
 mkdir -p ~/catkin_noitom/src
-mv noitom_demo/ ~/catkin_noitom/src
+cp urdfdemo_ros1 ~/catkin_noitom/src
 cd ~/catkin_noitom/src
 catkin_init_workspace
 cd  ../
 catkin_make
+```
+
+2. 运行ros master
+
+```
+cd  ~/catkin_noitom
 source  devel/setup.bash
-roslaunch  noitom_demo view_robot.launch
-~~~
+roslaunch urdfdemo_ros1 view_robot.launch
+```
 
+#### ROS2
 
+1. 创建工作空间并make
 
-
-
-2. ROS2
-
-~~~
-cd  /noitom_demo
+```
+mkdir -p ~/catkin_noitom
+cp urdfdemo_ros2  ~/catkin_noitom
+cd  ~/catkin_noitom/urdfdemo_ros2
 colcon build
+```
+
+2. 运行ros master
+
+```
+cd  ~/catkin_noitom/urdfdemo_ros2
 source  install/setup.bash
-ros2  noitom_demo view_robot.launch.py
-~~~
+ros2  urdfdemo_ros2 view_robot.launch.py
+```
 
 
+### 4. 启动ROS Node
 
+1. ROS1驱动火柴人模型
 
+```
+cd path/to/mocap_ros
+python mocap_to_stickman_ros1.py
 
-### Mocap Api  configuration
+```
 
-This directory contains motion driver programs for humanoid robot manufacturers. The program uses mocapapi to interface with Axis Studio to obtain BVH motion data and convert it into URDF format for driving the movements of humanoid robots. It can achieve real-time motion driving.
+2. ROS1驱动机器人模型
 
-1. Content List
+```
+cd path/to/mocap_ros
+python mocap_to_robot_ros1.py
 
-- lib/: This folder includes dynamic libraries of robotapi for various CPU architectures. The library is responsible for interfacing with motion capture devices to obtain motion data and converting it into URDF format data.
-- retarget.json: A JSON file used for conversion specific to each robot manufacturer and model.
-- robot_api_ros1.py: A Python script that starts up, calls the robotapi library, reads the retarget.json file, and uses ROS1 interfaces to drive the robot.
-- robot_api_ros2.py: A Python script that starts up, calls the robotapi library, reads the retarget.json file, and uses ROS2 interfaces to drive the robot.
+```
 
->Note that the lib folder, Python script, and retarget.json must be in the same directory. When the Python script is launched, it will load the JSON file and the .so files in the lib directory from the current directory.
+3. ROS2驱动火柴人模型
 
-2. Run Python script
+```
+cd path/to/mocap_ros
+python mocap_to_stickman_ros2.py
 
-   - ROS1
+```
 
-     ~~~
-     python3 robot_api_ros1.py
-     ~~~
+4. ROS2驱动机器人模型
 
-   - ROS2
+```
+cd path/to/mocap_ros
+python mocap_to_robot_ros2.py
 
-     ~~~
-     python3 robot_api_ros2.py
-     ~~~
-
-> At this point, you will see that the 3D model in the Axis Studio software and the model in the robot window are moving in sync.
-
+```
