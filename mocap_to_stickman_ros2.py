@@ -5,10 +5,7 @@ from sensor_msgs.msg import JointState, Joy
 from geometry_msgs.msg import TransformStamped
 from tf2_ros import StaticTransformBroadcaster
 
-
 from mocap_robotapi import *
-
-
 
 links_parent = {
     "Hips": "world",
@@ -71,17 +68,11 @@ links_parent = {
     "LeftHandPinky2": "LeftHandPinky1",
     "LeftHandPinky3": "LeftHandPinky2"
 }
-def asix_2_ros_translation(x, y, z):
-    return (z, x, y)
-
-def asix_2_ros_rotation(x, y, z, w):
-    return (z, x, y, -w)
 def mocap_to_stickman_ros2():       
   try:
     rclpy.init()
-    node = Node("transform_node")
-    publisher = node.create_publisher(JointState, "/joint_states", 10)
-    timer = node.create_timer(0.1, lambda: publish_joint_state(node, publisher))
+    node = Node("real_time_transform_publisher")
+    node.create_timer(0.1, lambda: send_link_poses_tf(node))
     json_file_path = './retarget.json'
     robot = MCPRobot(open(json_file_path).read())
     app = MCPApplication()
@@ -90,16 +81,10 @@ def mocap_to_stickman_ros2():
     settings.set_bvh_rotation(0)
     app.set_settings(settings)
     app.open()
-    # 定义关节名称列表
-    # 读取JSON文件
-    with open(json_file_path, 'r') as file:
-        data = json.load(file)
-    joint_names = [item['retargetJoint'] for item in data['retargetJoints']]   
-
     
     br = StaticTransformBroadcaster(node)
     t = TransformStamped()
-    def publish_joint_state(node, publisher):
+    def send_link_poses_tf(node):
           evts = app.poll_next_event()
           for evt in evts:
               if evt.event_type == MCPEventType.AvatarUpdated:
@@ -148,25 +133,6 @@ def mocap_to_stickman_ros2():
                   t.transform.rotation.z = real_time_data["root_rot_z"]
                   t.transform.rotation.w = -real_time_data["root_rot_w"]
                   br.sendTransform(t)
-
-
-                  # 构建JointState消息
-                  joint_state_msg = JointState()
-                  joint_state_msg.header.stamp = node.get_clock().now().to_msg()
-                  joint_state_msg.name = joint_names
-
-                  # 初始化关节位置列表
-                  joint_positions = [0.0] * len(joint_names)
-
-                  # 根据关节名称填充关节位置
-                  for i, name in enumerate(joint_names):                    
-                      if name in real_time_data['joint_positions']:
-                          joint_positions[i] = real_time_data['joint_positions'][name]
-
-                  joint_state_msg.position = joint_positions
-                  publisher.publish(joint_state_msg)
-
-                  print(f"Joint positions: {joint_positions}")
               
               elif evt.event_type == MCPEventType.RigidBodyUpdated:
                   print('rigid body updated')
