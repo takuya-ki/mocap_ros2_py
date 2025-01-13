@@ -11,9 +11,8 @@
 - ROS：是Robot Operating System，它是一个开源的机器人操作系统，可以用来驱动机器人，并提供通信、消息传递等功能。
 - ROS1：是ROS的第一个版本，它是ROS的主要版本，目前ROS2已经成为主流版本。
 - ROS2：是ROS的第二个版本，它是ROS的最新版本，它提供了更加灵活的通信机制，可以用来驱动机器人。
-- 火柴人
 
-
+> 注意：诺亦腾除了Axis Studio软件，还提供PNLink（有线动捕产品）的上位机软件以及Alice（光学动捕产品）的上位机软件。这些软件均可以用来获取动捕数据，并对接ROS平台。为了方便演示，本工程只使用Axis Studio软件。
 
 ## 前提
 
@@ -24,20 +23,20 @@
 
 该工程使用python语言编写，演示了如何调用封装的robotapi库，从Axis Studio获取动捕数据，这些数据是人体的骨骼动作数据，以BVH格式存储。接下来，有两个选择：
 1. 你可以自己解析BVH数据，并将其转换为你自己人形机器人的URDF格式，然后使用ROS1或ROS2驱动它。
-2. 另外，我们也提供了一个URDF文件，你可以直接使用它来看到动作效果。如果你需要适配你自己的机器人，可以直接联系我们（xxx@noitom.com）提供帮助。
+2. 另外，我们也提供了一个机器人模型及其对应的URDF文件，你可以直接使用它来看到该机器人的动作效果。如果你需要适配你自己的机器人，可以直接联系我们（xxx@noitom.com）提供帮助。
 
-针对选择1，为了确保数据的准确性，我们会演示如何把从axis studio获取的数据驱动到ROS平台上的一个人体模型（火柴人），最终的效果是，在axis studio中录制的动作，在ros中驱动的火柴人模型也会跟着动作运动。
+针对选择1，为了确保数据的准确性，我们会演示如何把从axis studio获取的数据，驱动到ROS平台上的一个人体模型（火柴人），最终的效果是，在axis studio中录制的动作，在ros中的火柴人模型也会跟着动作运动。
 
 在进入下面的步骤之前，我们先了解一下本工程的目录结构
 
 - lib目录: 包含了针对各个CPU架构的librobotapi动态库文件，它提供了接口函数，从Axis Studio获取动捕数据，同时也封装了从BVH数据转换为URDF格式的功能。
 - img目录：包含了本说明文档中用到的图片。
-- urdfdemo_ros1目录：ROS1环境下，包含了用于驱动机器人模型的URDF文件，以及用于驱动机器人模型的URDF文件。
-- urdfdemo_ros2目录：ROS2环境下，包含了用于驱动机器人模型的URDF文件，以及用于驱动机器人模型的URDF文件。
+- urdfdemo_ros1目录：ROS1环境下，包含了用于驱动机器人模型的URDF文件，以及用于驱动机器人模型的launch文件。
+- urdfdemo_ros2目录：ROS2环境下，包含了用于驱动机器人模型的URDF文件，以及用于驱动机器人模型的launch文件。
 - README.md：本说明文档。
-- mocap_robotapi.py：封装了librobotapi库，从Axis Studio获取动捕数据，同时提供了BVH数据转换为URDF格式的功能。
+- mocap_robotapi.py：封装了librobotapi库，从Axis Studio获取动捕数据，同时提供了BVH数据转换为符合URDF规范的json数据的功能。
 - retarget.json：mocap_robotapi使用它用于转换特定于每个机器人的URDF格式。不同的urdf文件需要不同的retarget.json文件，不建议修改这个文件。
-- mocap_to_robot_ros1.py：针对ROS1环境，做为一个ros node，调用mocap_robotapi库，转换BVH数据为URDF格式，publish 数据类型（JointState）到 topic（/joint_states），以驱动机器人。
+- mocap_to_robot_ros1.py：针对ROS1环境，做为一个ros node，调用mocap_robotapi库，转换BVH数据为URDF格式的json数据，publish 数据类型（JointState）到 topic（/joint_states），以驱动机器人。
 - mocap_to_robot_ros2.py：针对ROS2环境，功能与mocap_to_robot_ros1.py相同
 - mocap_to_stickman_ros1.py：针对ROS1环境，做为一个ros node，调用mocap_robotapi库，将原始BVH数据publish 数据类型（？？？）到 topic（/？？？），以驱动robot的火柴人模型。
 - mocap_to_stickman_ros2.py：针对ROS2环境，功能与mocap_to_stickman_ros1.py相同
@@ -46,7 +45,13 @@
 
 架构图如下：
 
-![img](img/robotapi-ros.drawio.png)
+### 火柴人模型架构
+
+![img](img/robotapi-ros-sticker.png)
+
+### 机器人模型架构
+
+![img](img/robotapi-ros-robot.png)
 
 ## 步骤
 
