@@ -2,7 +2,6 @@ import json
 import rospy
 import tf
 
-
 from sensor_msgs.msg import JointState, Joy
 
 
@@ -78,22 +77,12 @@ def asix_2_ros_translation(x, y, z):
 def asix_2_ros_rotation(x, y, z, w):
     return (z, x, y, -w)
 
-
-
-# from galbot_realtime_controller import GalbotRealTimeController
-
 def mocap_to_stickman_ros1():
     # 初始化ROS节点
-    rospy.init_node("real_time_joint_state_publisher", anonymous=True)
-    publisher = rospy.Publisher("/joint_states", JointState, queue_size=10)
-    rate = rospy.Rate(90)  # 设置发布频率为10Hz
+    rospy.init_node("real_time_transform_publisher", anonymous=True)
+    rate = rospy.Rate(90)  # 设置发布频率为90Hz
 
-    json_file_path = './retarget.json'
-    # 定义关节名称列表
-    # 读取JSON文件
-    with open(json_file_path, 'r') as file:
-            data = json.load(file)
-    
+    json_file_path = './retarget.json'    
     robot = MCPRobot(open(json_file_path).read())
     app = MCPApplication()
     settings = MCPSettings()
@@ -102,7 +91,7 @@ def mocap_to_stickman_ros1():
     app.set_settings(settings)
     app.open()
 
-    action_pub = rospy.Publisher('/remoter/action_list', Joy, queue_size=1)
+    rospy.Publisher('/remoter/action_list', Joy, queue_size=1)
     br = tf.TransformBroadcaster()
 
     try:
@@ -113,7 +102,6 @@ def mocap_to_stickman_ros1():
                     avatar = MCPAvatar(evt.event_data.avatar_handle)
                     robot.update_robot(avatar)
                     robot.run_robot_step()
-                    # print(robot.get_robot_ros_frame_json())
 
                     # 获取实时数据
                     real_time_data = json.loads(robot.get_robot_ros_frame_json()[0])
