@@ -73,7 +73,7 @@ def mocap_to_stickman_ros2():
     rclpy.init()
     node = Node("real_time_transform_publisher")
     node.create_timer(0.1, lambda: send_link_poses_tf(node))
-    json_file_path = './retarget.json'
+    json_file_path = './urdfdemo_ros1/retarget.json'
     robot = MCPRobot(open(json_file_path).read())
     app = MCPApplication()
     settings = MCPSettings()
@@ -83,7 +83,6 @@ def mocap_to_stickman_ros2():
     app.open()
     
     br = StaticTransformBroadcaster(node)
-    t = TransformStamped()
     def send_link_poses_tf(node):
           evts = app.poll_next_event()
           for evt in evts:

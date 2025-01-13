@@ -82,7 +82,7 @@ def mocap_to_stickman_ros1():
     rospy.init_node("real_time_transform_publisher", anonymous=True)
     rate = rospy.Rate(90)  # 设置发布频率为90Hz
 
-    json_file_path = './retarget.json'    
+    json_file_path = './urdfdemo_ros1/retarget.json'    
     robot = MCPRobot(open(json_file_path).read())
     app = MCPApplication()
     settings = MCPSettings()
@@ -119,7 +119,7 @@ def mocap_to_stickman_ros1():
                     # robot 
                     translation = asix_2_ros_translation(real_time_data["root_pos_x"], real_time_data["root_pos_y"], real_time_data["root_pos_z"]) 
                     rotation = asix_2_ros_rotation(real_time_data["root_rot_x"], real_time_data["root_rot_y"], real_time_data["root_rot_z"], real_time_data["root_rot_w"])
-                    br.sendTransform((0,0,0), rotation, time_now, "base_link", "world")
+                    br.sendTransform(translation, rotation, time_now, "base_link", "world")
 
                 
                 elif evt.event_type == MCPEventType.RigidBodyUpdated:

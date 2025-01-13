@@ -10,7 +10,7 @@ def ros1_joint_state_publisher():
   publisher = rospy.Publisher("/joint_states", JointState, queue_size=10)
   rate = rospy.Rate(10)  # 设置发布频率为10Hz
 
-  json_file_path = './retarget.json'
+  json_file_path = './urdfdemo_ros2/retarget.json'
   # 定义关节名称列表
   # 读取JSON文件
   with open(json_file_path, 'r') as file:

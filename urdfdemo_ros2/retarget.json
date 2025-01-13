@@ -1,0 +1,223 @@
+{
+    "ankelHeight": 0.0,
+    "ankelOrder": {
+        "axis1": 1,
+        "axis2": 0,
+        "axis3": 2
+    },
+    "headOrder": {
+        "axis1": 2,
+        "axis2": 0,
+        "axis3": 1
+    },
+    "hipOrder": {
+        "axis1": 2,
+        "axis2": 1,
+        "axis3": 0
+    },
+    "lowerBodyHeight": 0.75,
+    "lowerBodyMode": 1,
+    "lowerLegLength": 0.4000000059604645,
+    "retargetJoints": [
+        {
+            "max": 1.0,
+            "maxSpeed": 1.0,
+            "min": 0.0,
+            "offset": 80.0,
+            "rawJoint": 24,
+            "retargetJoint": "leg_joint1",
+            "sign": -1
+        },
+        {
+            "max": 3.049999952316284,
+            "maxSpeed": 1.0,
+            "min": 0.0,
+            "offset": 0.0,
+            "rawJoint": 23,
+            "retargetJoint": "leg_joint2",
+            "sign": 1
+        },
+        {
+            "max": 2.356194496154785,
+            "maxSpeed": 1.0,
+            "min": 0.0,
+            "offset": 100.0,
+            "rawJoint": 21,
+            "retargetJoint": "leg_joint3",
+            "sign": 1
+        },
+        {
+            "max": 1.5707963705062866,
+            "maxSpeed": 1.0,
+            "min": -1.5707963705062866,
+            "offset": 0.0,
+            "rawJoint": 26,
+            "retargetJoint": "leg_joint4",
+            "sign": -1
+        },
+        {
+            "max": 1.5707963705062866,
+            "maxSpeed": 1.5,
+            "min": -1.5707963705062866,
+            "offset": 0.0,
+            "rawJoint": 29,
+            "retargetJoint": "head_joint1",
+            "sign": 1
+        },
+        {
+            "max": 0.36651915311813354,
+            "maxSpeed": 1.5,
+            "min": -0.36651915311813354,
+            "offset": 0.0,
+            "rawJoint": 31,
+            "retargetJoint": "head_joint2",
+            "sign": 1
+        },
+        {
+            "max": 3.049999952316284,
+            "maxSpeed": 1.5,
+            "min": -3.049999952316284,
+            "offset": -90.0,
+            "rawJoint": 7,
+            "retargetJoint": "right_arm_joint1",
+            "sign": 1
+        },
+        {
+            "max": 1.5707999467849731,
+            "maxSpeed": 1.5,
+            "min": -1.5707999467849731,
+            "offset": 90.0,
+            "rawJoint": 8,
+            "retargetJoint": "right_arm_joint2",
+            "sign": 1
+        },
+        {
+            "max": 1.5707999467849731,
+            "maxSpeed": 1.5,
+            "min": -1.5707999467849731,
+            "offset": 0.0,
+            "rawJoint": 9,
+            "retargetJoint": "right_arm_joint3",
+            "sign": 1
+        },
+        {
+            "max": 2.0999999046325684,
+            "maxSpeed": 1.5,
+            "min": -2.0999999046325684,
+            "offset": 0.0,
+            "rawJoint": 10,
+            "retargetJoint": "right_arm_joint4",
+            "sign": -1
+        },
+        {
+            "max": 3.049999952316284,
+            "maxSpeed": 1.5,
+            "min": -3.049999952316284,
+            "offset": 90.0,
+            "rawJoint": 0,
+            "retargetJoint": "left_arm_joint1",
+            "sign": 1
+        },
+        {
+            "max": 1.5707999467849731,
+            "maxSpeed": 1.5,
+            "min": -1.5707999467849731,
+            "offset": -90.0,
+            "rawJoint": 1,
+            "retargetJoint": "left_arm_joint2",
+            "sign": 1
+        },
+        {
+            "max": 1.5707999467849731,
+            "maxSpeed": 1.5,
+            "min": -1.5707999467849731,
+            "offset": 0.0,
+            "rawJoint": 2,
+            "retargetJoint": "left_arm_joint3",
+            "sign": 1
+        },
+        {
+            "max": 3.1415927410125732,
+            "maxSpeed": 1.5,
+            "min": -3.1415927410125732,
+            "offset": 0.0,
+            "rawJoint": 3,
+            "retargetJoint": "left_arm_joint4",
+            "sign": 1
+        },
+        {
+            "max": 2.9000000953674316,
+            "maxSpeed": 1.5,
+            "min": -2.9000000953674316,
+            "offset": 0.0,
+            "rawJoint": 11,
+            "retargetJoint": "right_arm_joint5",
+            "sign": 1
+        },
+        {
+            "max": 0.7853981852531433,
+            "maxSpeed": 1.5,
+            "min": -0.7853981852531433,
+            "offset": 0.0,
+            "rawJoint": 13,
+            "retargetJoint": "right_arm_joint6",
+            "sign": -1
+        },
+        {
+            "max": 1.399999976158142,
+            "maxSpeed": 1.5,
+            "min": -1.399999976158142,
+            "offset": 0.0,
+            "rawJoint": 12,
+            "retargetJoint": "right_arm_joint7",
+            "sign": -1
+        },
+        {
+            "max": 2.9000000953674316,
+            "maxSpeed": 1.5,
+            "min": -2.9000000953674316,
+            "offset": 0.0,
+            "rawJoint": 4,
+            "retargetJoint": "left_arm_joint5",
+            "sign": 1
+        },
+        {
+            "max": 0.7853981852531433,
+            "maxSpeed": 1.5,
+            "min": -0.7853981852531433,
+            "offset": 0.0,
+            "rawJoint": 6,
+            "retargetJoint": "left_arm_joint6",
+            "sign": -1
+        },
+        {
+            "max": 1.399999976158142,
+            "maxSpeed": 1.5,
+            "min": -1.399999976158142,
+            "offset": 0.0,
+            "rawJoint": 5,
+            "retargetJoint": "left_arm_joint7",
+            "sign": -1
+        }
+    ],
+    "shoulderAngle": 0.0,
+    "shoulderOrder": {
+        "axis1": 1,
+        "axis2": 0,
+        "axis3": 2
+    },
+    "spineOrder": {
+        "axis1": 2,
+        "axis2": 0,
+        "axis3": 1
+    },
+    "upperLegLength": 0.4000000059604645,
+    "useAngleLimit": true,
+    "useForearmYaw": false,
+    "useSpeedLimit": true,
+    "wristOrder": {
+        "axis1": 1,
+        "axis2": 0,
+        "axis3": 2
+    }
+}

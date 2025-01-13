@@ -29,21 +29,22 @@
 
 在进入下面的步骤之前，我们先了解一下本工程的目录结构
 
-- lib目录: 包含了针对各个CPU架构的librobotapi动态库文件，它提供了接口函数，从Axis Studio获取动捕数据，同时也封装了从BVH数据转换为URDF格式的功能。
-- img目录：包含了本说明文档中用到的图片。
-- urdfdemo_ros1目录：ROS1环境下，包含了用于驱动机器人模型的URDF文件，以及用于驱动机器人模型的launch文件。
-- urdfdemo_ros2目录：ROS2环境下，包含了用于驱动机器人模型的URDF文件，以及用于驱动机器人模型的launch文件。
-- README.md：本说明文档。
-- mocap_robotapi.py：封装了librobotapi库，从Axis Studio获取动捕数据，同时提供了BVH数据转换为符合URDF规范的json数据的功能。
-- retarget.json：mocap_robotapi使用它用于转换特定于每个机器人的URDF格式。不同的urdf文件需要不同的retarget.json文件，不建议修改这个文件。
-- mocap_to_robot_ros1.py：针对ROS1环境，做为一个ros node，调用mocap_robotapi库，转换BVH数据为URDF格式的json数据，publish 数据类型（JointState）到 topic（/joint_states），以驱动机器人。
-- mocap_to_robot_ros2.py：针对ROS2环境，功能与mocap_to_robot_ros1.py相同
-- mocap_to_stickman_ros1.py：针对ROS1环境，做为一个ros node，调用mocap_robotapi库，将原始BVH数据publish 数据类型（？？？）到 topic（/？？？），以驱动robot的火柴人模型。
-- mocap_to_stickman_ros2.py：针对ROS2环境，功能与mocap_to_stickman_ros1.py相同
+| 条目                      | 说明                                                         |
+| ------------------------- | ------------------------------------------------------------ |
+| lib/                      | 包含了针对各个CPU架构的librobotapi动态库文件，它提供了接口函数，从Axis Studio获取动捕数据，同时也封装了从BVH数据转换为URDF格式的功能。 |
+| img/                      | 包含了本说明文档中用到的图片                                 |
+| urdfdemo_ros1/            | ROS1环境下，包含了用于驱动机器人模型的URDF文件，以及用于驱动机器人模型的launch文件。 |
+| urdfdemo_ros2/            | ROS2环境下，包含了用于驱动机器人模型的URDF文件，以及用于驱动机器人模型的launch文件。 |
+| README.md                 | 本说明文档                                                   |
+| mocap_robotapi.py         | 封装了librobotapi库，从Axis Studio获取动捕数据，同时提供了BVH数据转换为符合URDF规范的json数据的功能。 |
+| requirements_ros1.txt     | 针对ROS1环境，本工程依赖的python库。                         |
+| requirements_ros2.txt     | 针对ROS2环境，本工程依赖的python库。                         |
+| mocap_to_robot_ros1.py    | 针对ROS1环境，做为一个ros node，调用mocap_robotapi库，转换BVH数据为URDF格式的json数据，publish 数据类型（JointState）到 topic（/joint_states），以驱动机器人。 |
+| mocap_to_robot_ros2.py    | 针对ROS2环境，功能与mocap_to_robot_ros1.py相同               |
+| mocap_to_stickman_ros1.py | 针对ROS1环境，做为一个ros node，调用mocap_robotapi库，将原始BVH数据publish 数据类型（Joy）到 topic（/remoter/action_list），以驱动robot的火柴人模型。 |
+| mocap_to_stickman_ros2.py | 针对ROS2环境，功能与mocap_to_stickman_ros1.py相同            |
 
 ## 架构与数据流
-
-架构图如下：
 
 ### 火柴人模型架构
 
@@ -57,7 +58,7 @@
 
 1. 首先找一台windows PC，安装好Axis Studio软件，并做好配置。
 2. 其次找一台linux PC，安装好ROS环境。（ROS1或ROS2都可以）
-3. 根据ROS1还是ROS2环境，启动对应的ROS Sim
+3. 根据ROS1还是ROS2环境，启动对应的ROS visualizer
 4. 根据要驱动的模型是火柴人还是机器人，启动对应的ros node
 
 详细步骤描述如下：
@@ -70,7 +71,10 @@
 cd ~
 git clone https://github.com/pnmocap/mocap_ros.git
 cd mocap_ros
-pip3 install -r requirements.txt
+
+pip3 install -r requirements_ros1.txt
+or
+pip3 install -r requirements_ros2.txt
 ```
 
 
@@ -98,83 +102,87 @@ pip3 install -r requirements.txt
 
 [![img](img/stream_04.png)](img/stream_04.png)
 
-> 其中的local address和destination address需要根据实际情况进行修改。
+> BVH Format - Rotation: **默认是YXZ，请务必修改为XYZ**
+> 其中的local address和destination address需要根据实际情况进行修改，请务必确保Local和Destination地址是同一个局域网的IP，**不要写成127.0.0.1，且目标端口是7012.**
 
-### 3. 启动ROS SIM环境
+### 3. 启动ROS Visualizer
 
 无论驱动火柴人模型还是机器人模型，共用的同一套工作空间。
 
 #### ROS1
 
-1. 创建工作空间并make
+1. 创建工作空间（仅第一次）
 
 ```
 mkdir -p ~/catkin_noitom/src
 cp urdfdemo_ros1 ~/catkin_noitom/src
 cd ~/catkin_noitom/src
 catkin_init_workspace
-cd  ../
-catkin_make
 ```
 
-2. 运行ros master
+2. 编译并运行ROS visualizer
 
 ```
 cd  ~/catkin_noitom
+catkin_make
 source  devel/setup.bash
 roslaunch urdfdemo_ros1 view_robot.launch
 ```
 
 #### ROS2
 
-1. 创建工作空间并make
+1. 创建工作空间（仅第一次）
 
 ```
 mkdir -p ~/catkin_noitom
 cp urdfdemo_ros2  ~/catkin_noitom
+```
+
+2. 编译并运行ros master
+
+```
 cd  ~/catkin_noitom/urdfdemo_ros2
 colcon build
-```
-
-2. 运行ros master
-
-```
-cd  ~/catkin_noitom/urdfdemo_ros2
 source  install/setup.bash
 ros2  urdfdemo_ros2 view_robot.launch.py
 ```
 
+#### 配置Visualizer（rviz）
+
+1. 添加火柴人模型TF
+
+启动ros visualizer，点击左边“Add”，在弹出的窗口选择“TF”，并点击OK。如下图：
+
+![img](img/add_tf.png)
+
+2. 配置左侧菜单栏，确定显示/隐藏：机器人模型或火柴人模型，如下图：
+
+![img](img/stickerman.png)
+
+
 
 ### 4. 启动ROS Node
 
-1. ROS1驱动火柴人模型
+前提：
+
+1. 请按照上述步骤配置好Axis Studio软件，使能BVH Broadcasting；
+2. 启动ros visualizer，根据火柴人或机器人，确定显示/隐藏：TF还是机器人模型。
+
+#### 驱动火柴人模型
 
 ```
 cd path/to/mocap_ros
 python mocap_to_stickman_ros1.py
-
+or
+python mocap_to_stickman_ros2.py
 ```
 
-2. ROS1驱动机器人模型
+#### 驱动机器人模型
 
 ```
 cd path/to/mocap_ros
 python mocap_to_robot_ros1.py
-
-```
-
-3. ROS2驱动火柴人模型
-
-```
-cd path/to/mocap_ros
-python mocap_to_stickman_ros2.py
-
-```
-
-4. ROS2驱动机器人模型
-
-```
-cd path/to/mocap_ros
+or
 python mocap_to_robot_ros2.py
-
 ```
+
