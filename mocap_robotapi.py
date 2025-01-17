@@ -22,8 +22,8 @@ else:
 
 MocapApi = cdll.LoadLibrary(os.path.join(os.path.dirname(__file__), {
   'DarWin': '',
-  'Linux': so_files_path,
-  'Windows': ''
+  'Linux':  so_files_path,
+  'Windows': './lib/MocapApi.dll'
 }[system()]))
 
 MCPError = namedtuple('EMCPError', [
@@ -1012,10 +1012,10 @@ def test_mocap_api():
     for child in children:
       print_joint(child)
 
-  robot = MCPRobot(open('D:\\work\\mocapapi\\test_data\\retarget.json').read())
+  robot = MCPRobot(open('retarget.json').read())
   app = MCPApplication()
   settings = MCPSettings()
-  settings.set_udp(7003)
+  settings.set_udp(7012)
   app.set_settings(settings)
   app.open()
   while True:
@@ -1024,7 +1024,7 @@ def test_mocap_api():
       if evt.event_type == MCPEventType.AvatarUpdated:
         avatar = MCPAvatar(evt.event_data.avatar_handle)
         robot.update_robot(avatar)
-        print (robot.get_robot_ros_frame_json())
+        # print (robot.get_robot_ros_frame_json())
         # print(avatar.get_index())
         # print(avatar.get_name())
         # print_joint(avatar.get_root_joint())
@@ -1034,3 +1034,6 @@ def test_mocap_api():
         print('unknow event')
 
     time.sleep(0.001)
+
+if __name__ == '__main__':
+  test_mocap_api()

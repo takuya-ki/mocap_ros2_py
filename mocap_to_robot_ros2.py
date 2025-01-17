@@ -25,7 +25,7 @@ def ros2_joint_state_publisher():
     # 读取JSON文件
     with open(json_file_path, 'r') as file:
         data = json.load(file)
-    joint_names = [item['retargetJoint'] for item in data['retargetJoints']]      
+    joint_names = data['urdfJointNames']     
     
     def publish_joint_state(node, publisher):
           evts = app.poll_next_event()

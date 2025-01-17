@@ -36,6 +36,7 @@ def ros1_joint_state_publisher():
                 
                 # 获取实时数据
                 real_time_data = json.loads(robot.get_robot_ros_frame_json()[0])
+                joint_positions = real_time_data['joint_positions']
 
                 # 创建并填充JointState消息
                 joint_state_msg = JointState()
