@@ -13,7 +13,7 @@ def ros2_joint_state_publisher():
     node = Node("json_to_joint_state_publisher")
     publisher = node.create_publisher(JointState, "/joint_states", 10)
     timer = node.create_timer(0.1, lambda: publish_joint_state(node, publisher))
-    json_file_path = './urdfdemo_ros2/retarget.json'
+    json_file_path = './retarget.json'
     robot = MCPRobot(open(json_file_path).read())
     app = MCPApplication()
     settings = MCPSettings()

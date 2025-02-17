@@ -82,7 +82,7 @@ def mocap_to_stickman_ros1():
     rospy.init_node("real_time_transform_publisher", anonymous=True)
     rate = rospy.Rate(90)  # 设置发布频率为90Hz
 
-    json_file_path = './urdfdemo_ros1/retarget.json'    
+    json_file_path = './retarget.json'    
     robot = MCPRobot(open(json_file_path).read())
     app = MCPApplication()
     settings = MCPSettings()

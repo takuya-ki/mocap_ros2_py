@@ -23,7 +23,7 @@
 
 该工程使用python语言编写，演示了如何调用封装的robotapi库，从Axis Studio获取动捕数据，这些数据是人体的骨骼动作数据，以BVH格式存储。接下来，有两个选择：
 1. 你可以自己解析BVH数据，并将其转换为你自己人形机器人的URDF格式，然后使用ROS1或ROS2驱动它。
-2. 另外，我们也提供了一个机器人模型及其对应的URDF文件，你可以直接使用它来看到该机器人的动作效果。如果你需要适配你自己的机器人，可以直接联系我们（xxx@noitom.com）提供帮助。
+2. 另外，我们也提供了一个机器人模型及其对应的URDF文件，你可以直接使用它来看到该机器人的动作效果。如果你需要适配你自己的机器人，可以直接联系我们（info@noitom.com）提供帮助。
 
 针对选择1，为了确保数据的准确性，我们会演示如何把从axis studio获取的数据，驱动到ROS平台上的一个人体模型（火柴人），最终的效果是，在axis studio中录制的动作，在ros中的火柴人模型也会跟着动作运动。
 
@@ -33,8 +33,8 @@
 | ------------------------- | ------------------------------------------------------------ |
 | lib/                      | 包含了针对各个CPU架构的librobotapi动态库文件，它提供了接口函数，从Axis Studio获取动捕数据，同时也封装了从BVH数据转换为URDF格式的功能。 |
 | img/                      | 包含了本说明文档中用到的图片                                 |
-| urdfdemo_ros1/            | ROS1环境下，包含了用于驱动机器人模型的URDF文件，以及用于驱动机器人模型的launch文件。 |
-| urdfdemo_ros2/            | ROS2环境下，包含了用于驱动机器人模型的URDF文件，以及用于驱动机器人模型的launch文件。 |
+| unitree_h1_ros1/          | ROS1环境下，包含了用于驱动机器人模型的URDF文件，以及用于驱动机器人模型的launch文件。 |
+| unitree_h1_ros2/          | ROS2环境下，包含了用于驱动机器人模型的URDF文件，以及用于驱动机器人模型的launch文件。 |
 | README.md                 | 本说明文档                                                   |
 | mocap_robotapi.py         | 封装了librobotapi库，从Axis Studio获取动捕数据，同时提供了BVH数据转换为符合URDF规范的json数据的功能。 |
 | requirements_ros1.txt     | 针对ROS1环境，本工程依赖的python库。                         |
@@ -68,10 +68,6 @@
 登录安装了ROS的linux PC，下载本工程并安装依赖包。
 
 ```
-cd ~
-git clone https://github.com/pnmocap/mocap_ros.git
-cd mocap_ros
-
 pip3 install -r requirements_ros1.txt
 or
 pip3 install -r requirements_ros2.txt
@@ -90,15 +86,14 @@ pip3 install -r requirements_ros2.txt
 
 
 2. 使能 *BVH Broadcasting - Edit*, 配置如下图
-
-   - Skeleton: **Axis Studio**
+- Skeleton: **Axis Studio**
    - BVH Format - Rotation: **XYZ**
    - BVH Format - Displacement: **Checked**
    - Frame Format - Type: **Binary**
    - Frame Format - Use old header format: **Unchecked**
    - Protocol: **UDP**
    - Local Address: **192.168.2.40:7001**
-   - Destination Address: **192.168.2.147:7012**
+   - Destination Address: **192.168.3.147:7012**
 
 [![img](img/stream_04.png)](img/stream_04.png)
 
@@ -115,9 +110,9 @@ pip3 install -r requirements_ros2.txt
 
 ```
 mkdir -p ~/catkin_noitom/src
-cp urdfdemo_ros1 ~/catkin_noitom/src
 cd ~/catkin_noitom/src
 catkin_init_workspace
+cp -r  unitree_h1_ros1  ~/catkin_noitom/src/
 ```
 
 2. 编译并运行ROS visualizer
@@ -126,7 +121,7 @@ catkin_init_workspace
 cd  ~/catkin_noitom
 catkin_make
 source  devel/setup.bash
-roslaunch urdfdemo_ros1 view_robot.launch
+roslaunch unitree_h1_ros1 display.launch
 ```
 
 #### ROS2
@@ -135,17 +130,19 @@ roslaunch urdfdemo_ros1 view_robot.launch
 
 ```
 mkdir -p ~/catkin_noitom
-cp urdfdemo_ros2  ~/catkin_noitom
+cp -r unitree_h1_ros2  ~/catkin_noitom
 ```
 
 2. 编译并运行ros master
 
 ```
-cd  ~/catkin_noitom/urdfdemo_ros2
+cd  ~/catkin_noitom/unitree_h1_ros2
 colcon build
 source  install/setup.bash
-ros2  urdfdemo_ros2 view_robot.launch.py
+ros2 launch  unitree_h1_ros2 display.launch.py
 ```
+
+打开模型配置文件 rviz config: File -> Open Config ( unitree_h1_ros2/launch/rviz.rviz)
 
 #### 配置Visualizer（rviz）
 
