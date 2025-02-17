@@ -68,6 +68,8 @@
 登录安装了ROS的linux PC，下载本工程并安装依赖包。
 
 ```
+git clone https://github.com/pnmocap/mocap_ros_py.git
+
 pip3 install -r requirements_ros1.txt
 or
 pip3 install -r requirements_ros2.txt
