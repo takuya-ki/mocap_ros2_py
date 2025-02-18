@@ -1024,6 +1024,7 @@ def test_mocap_api():
       if evt.event_type == MCPEventType.AvatarUpdated:
         avatar = MCPAvatar(evt.event_data.avatar_handle)
         robot.update_robot(avatar)
+        robot.run_robot_step()
         # print (robot.get_robot_ros_frame_json())
         # print(avatar.get_index())
         # print(avatar.get_name())

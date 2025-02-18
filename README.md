@@ -33,8 +33,6 @@
 | ------------------------- | ------------------------------------------------------------ |
 | lib/                      | 包含了针对各个CPU架构的librobotapi动态库文件，它提供了接口函数，从Axis Studio获取动捕数据，同时也封装了从BVH数据转换为URDF格式的功能。 |
 | img/                      | 包含了本说明文档中用到的图片                                 |
-| unitree_h1_ros1/          | ROS1环境下，包含了用于驱动机器人模型的URDF文件，以及用于驱动机器人模型的launch文件。 |
-| unitree_h1_ros2/          | ROS2环境下，包含了用于驱动机器人模型的URDF文件，以及用于驱动机器人模型的launch文件。 |
 | README.md                 | 本说明文档                                                   |
 | mocap_robotapi.py         | 封装了librobotapi库，从Axis Studio获取动捕数据，同时提供了BVH数据转换为符合URDF规范的json数据的功能。 |
 | requirements_ros1.txt     | 针对ROS1环境，本工程依赖的python库。                         |
@@ -104,47 +102,15 @@ pip3 install -r requirements_ros2.txt
 
 ### 3. 启动ROS Visualizer
 
+这里的ROS URDF模型使用的是unitree h1,您可以在github上找到它：
+
+~~~
+https://github.com/pnmocap/mocap_ros_urdf.git
+~~~
+
 无论驱动火柴人模型还是机器人模型，共用的同一套工作空间。
 
-#### ROS1
 
-1. 创建工作空间（仅第一次）
-
-```
-mkdir -p ~/catkin_noitom/src
-cd ~/catkin_noitom/src
-catkin_init_workspace
-cp -r  unitree_h1_ros1  ~/catkin_noitom/src/
-```
-
-2. 编译并运行ROS visualizer
-
-```
-cd  ~/catkin_noitom
-catkin_make
-source  devel/setup.bash
-roslaunch unitree_h1_ros1 display.launch
-```
-
-#### ROS2
-
-1. 创建工作空间（仅第一次）
-
-```
-mkdir -p ~/catkin_noitom
-cp -r unitree_h1_ros2  ~/catkin_noitom
-```
-
-2. 编译并运行ros master
-
-```
-cd  ~/catkin_noitom/unitree_h1_ros2
-colcon build
-source  install/setup.bash
-ros2 launch  unitree_h1_ros2 display.launch.py
-```
-
-打开模型配置文件 rviz config: File -> Open Config ( unitree_h1_ros2/launch/rviz.rviz)
 
 #### 配置Visualizer（rviz）
 
@@ -167,10 +133,16 @@ ros2 launch  unitree_h1_ros2 display.launch.py
 1. 请按照上述步骤配置好Axis Studio软件，使能BVH Broadcasting；
 2. 启动ros visualizer，根据火柴人或机器人，确定显示/隐藏：TF还是机器人模型。
 
+将对应urdf的  retarget.json  copy到工作空间
+
+~~~
+cp -r path/to/mocap_ros_py/unitree_h1/retarget.json  mocap_ros_py/retarget.json
+~~~
+
 #### 驱动火柴人模型
 
 ```
-cd path/to/mocap_ros
+cd path/to/mocap_ros_py
 python mocap_to_stickman_ros1.py
 or
 python mocap_to_stickman_ros2.py
@@ -179,7 +151,7 @@ python mocap_to_stickman_ros2.py
 #### 驱动机器人模型
 
 ```
-cd path/to/mocap_ros
+cd path/to/mocap_ros_py
 python mocap_to_robot_ros1.py
 or
 python mocap_to_robot_ros2.py

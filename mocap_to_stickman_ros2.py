@@ -1,7 +1,6 @@
 import json
 import rclpy
 from rclpy.node import Node
-from sensor_msgs.msg import JointState, Joy
 from geometry_msgs.msg import TransformStamped
 from tf2_ros import StaticTransformBroadcaster
 
