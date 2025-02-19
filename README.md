@@ -1,6 +1,6 @@
 # Quick start guide
 
-本工程将向你展示如何使用Noitom的动捕软件 Axis Studio 获取的动作捕捉数据，驱动人形机器人或ROS的火柴人的功能，支持ROS1和ROS2环境。
+本系统通过解析 Noitom Axis Studio 动捕数据，实现对人形机器人的实时控制与遥操作，支持 ROS1 和 ROS2 环境。系统包含三个核心模块，提供从数据解析到机器人驱动的完整解决方案。
 
 如果你是第一次接触动捕设备或ROS，下面的一些概念需要了解一下：
 
@@ -18,6 +18,48 @@
 
 - 一台Windows PC，已安装的Axis Studio软件
 - 一台Linux PC，已安装ROS1或ROS2环境
+
+## 技术说明
+
+- **数据流**：Axis Studio 发送 BVH → 解析关节角度 → 发布 `/joint_states` → URDF 模型驱动
+- **兼容性**：C++ 版本，Python 版本
+- **扩展性**：可通过修改 retarget.json 适配不同机器人模型
+
+## 系统构成
+
+### mocap_ros_py
+
+**功能**：python 实现的动捕数据 ROS Publisher节点，解析BVH 数据并发布 ROS 关节控制指令。
+
+ **源码：**
+
+~~~
+https://github.com/pnmocap/mocap_ros_py.git
+~~~
+
+### mocap_ros_cpp
+
+**功能：**C++   实现的动捕数据 ROS Publisher节点，解析BVH 数据并发布 ROS 关节控制指令。
+
+**源码:**
+
+~~~
+https://github.com/pnmocap/mocap_ros_cpp.git
+~~~
+
+### mocap_ros_urdf
+
+**功能**：基于 URDF 的机器人模型定义，包含机械结构、关节约束与可视化配置。
+
+**源码**：
+
+```
+https://github.com/pnmocap/mocap_ros_urdf.git
+```
+
+
+
+以下是关于 **mocap_ros_py**项目的配置和启动 ROS  Publisher节点的简介。
 
 ## 目录结构
 
