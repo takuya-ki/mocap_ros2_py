@@ -21,8 +21,7 @@ def ros2_joint_state_publisher():
     settings.set_bvh_rotation(0)
     app.set_settings(settings)
     app.open()
-    # 定义关节名称列表
-    # 读取JSON文件
+    # Joints name list
     with open(json_file_path, 'r') as file:
         data = json.load(file)
     joint_names = data['urdfJointNames']     
@@ -36,18 +35,18 @@ def ros2_joint_state_publisher():
                   robot.run_robot_step()
                   #print (robot.get_robot_ros_frame_json())
                   
-                  # 获取实时数据
+                  # get realtime data
                   real_time_data = json.loads(robot.get_robot_ros_frame_json()[0])
 
-                  # 构建JointState消息
+                  # create JointState
                   joint_state_msg = JointState()
                   joint_state_msg.header.stamp = node.get_clock().now().to_msg()
                   joint_state_msg.name = joint_names
 
-                  # 初始化关节位置列表
+                  # init joint positions
                   joint_positions = [0.0] * len(joint_names)
 
-                  # 根据关节名称填充关节位置
+                  # fill the position
                   for i, name in enumerate(joint_names):                    
                       if name in real_time_data['joint_positions']:
                           joint_positions[i] = real_time_data['joint_positions'][name]

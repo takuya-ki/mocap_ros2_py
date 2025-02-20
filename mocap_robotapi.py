@@ -5,11 +5,9 @@ import time
 import os
 from docutils.parsers.rst.directives import encoding
 
-# 获取系统架构
 architecture = machine()
-# 定义so文件的存放路径
 so_files_path = None
-# 根据系统架构选择.so文件
+# Select the .so file according to the system architecture.
 if architecture == "arm64" or architecture == "aarch64":
     so_files_path = "./lib/librobotapi_arm64.so"
 elif architecture == "x86_64":

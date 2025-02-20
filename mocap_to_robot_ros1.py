@@ -5,12 +5,11 @@ import rospy
 from sensor_msgs.msg import JointState
 
 def ros1_joint_state_publisher():
-  # 初始化ROS节点
+  # init ros node
   rospy.init_node("real_time_joint_state_publisher", anonymous=True)
   publisher = rospy.Publisher("/joint_states", JointState, queue_size=10)
-  rate = rospy.Rate(10)  # 设置发布频率为10Hz
-  # 定义关节名称列表
-  # 读取JSON文件
+  rate = rospy.Rate(10)  # set fps to 10Hz
+  # Joints name list
   json_file_path = './retarget.json'
   with open(json_file_path, 'r') as file:
       data = json.load(file)
@@ -33,34 +32,32 @@ def ros1_joint_state_publisher():
                 robot.run_robot_step()
                 #print (robot.get_robot_ros_frame_json())
                 
-                # 获取实时数据
+                # get realtime data
                 real_time_data = json.loads(robot.get_robot_ros_frame_json()[0])
                 #joint_positions = real_time_data['joint_positions']
 
-                # 创建并填充JointState消息
+                # create and publish JointState
                 joint_state_msg = JointState()
                 joint_state_msg.header.stamp = rospy.Time.now()
                 joint_state_msg.name = joint_names
 
-                # 初始化关节位置列表
+                # init joint positions
                 joint_positions = [0.0] * len(joint_names)
 
-                # 根据关节名称填充关节位置
+                # fill the position
                 for i, name in enumerate(joint_names):                    
                     if name in real_time_data['joint_positions']:
                         joint_positions[i] = real_time_data['joint_positions'][name]
 
                 joint_state_msg.position = joint_positions
-                # 发布消息
+                # publish
                 publisher.publish(joint_state_msg)
-                # 打印日志信息（可选）
                 rospy.loginfo(f"Published joint positions: {joint_positions}")
             
             elif evt.event_type == MCPEventType.RigidBodyUpdated:
                 print('rigid body updated')
             else:
                 print('unknow event')
-        # 睡眠以保持发布频率
         rate.sleep()
   except rospy.ROSInterruptException:
       pass      

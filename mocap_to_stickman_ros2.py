@@ -91,21 +91,21 @@ def mocap_to_stickman_ros2():
                   robot.run_robot_step()
                   #print (robot.get_robot_ros_frame_json())
                   
-                  # 获取实时数据
+                  # get realtime data
                   real_time_data = json.loads(robot.get_robot_ros_frame_json()[0])
 
-                  # 发布TF变换
+                  # publish TF
                   for link_name, pose_data in real_time_data["link_poses"].items():
                         t = TransformStamped()
                         t.header.stamp = node.get_clock().now().to_msg()
                         t.header.frame_id =  links_parent[link_name]
                         t.child_frame_id = link_name
-                        # 设置平移
+                        # translation
                         t.transform.translation.x = pose_data[0]
                         t.transform.translation.y = pose_data[1]
                         t.transform.translation.z = pose_data[2]
 
-                        # 设置旋转
+                        # rotation
                         #quat = tf_transformations.quaternion_from_euler(0, 0, 0)
                         t.transform.rotation.x = pose_data[3]
                         t.transform.rotation.y = pose_data[4]
@@ -113,18 +113,18 @@ def mocap_to_stickman_ros2():
                         t.transform.rotation.w = -pose_data[6]
                         br.sendTransform(t)
                     
-                  # 发布TF变换
+                  # publish
                   t = TransformStamped()
                   t.header.stamp = node.get_clock().now().to_msg()
                   t.header.frame_id = 'world'
                   t.child_frame_id = 'base_link'
 
-                  # 设置平移
+                  # translation
                   t.transform.translation.x = real_time_data["root_pos_x"]
                   t.transform.translation.y = real_time_data["root_pos_y"]
                   t.transform.translation.z = real_time_data["root_pos_z"]
 
-                  # 设置旋转
+                  # rotation
                   #quat = tf_transformations.quaternion_from_euler(0, 0, 0)
                   t.transform.rotation.x = real_time_data["root_rot_x"]
                   t.transform.rotation.y = real_time_data["root_rot_y"]

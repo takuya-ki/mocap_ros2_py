@@ -78,9 +78,9 @@ def asix_2_ros_rotation(x, y, z, w):
     return (z, x, y, -w)
 
 def mocap_to_stickman_ros1():
-    # 初始化ROS节点
+    # init ros node
     rospy.init_node("real_time_transform_publisher", anonymous=True)
-    rate = rospy.Rate(90)  # 设置发布频率为90Hz
+    rate = rospy.Rate(90)  # set fps to 90Hz
 
     json_file_path = './retarget.json'    
     robot = MCPRobot(open(json_file_path).read())
@@ -103,14 +103,14 @@ def mocap_to_stickman_ros1():
                     robot.update_robot(avatar)
                     robot.run_robot_step()
 
-                    # 获取实时数据
+                    # get realtime data
                     real_time_data = json.loads(robot.get_robot_ros_frame_json()[0])
                     # print(json.dumps(real_time_data))
 
                     time_now = rospy.Time.now()
 
                     # avatar
-                    # 遍历 link_poses 并发布到 tf
+                    # Traverse the link_poses and publish them to the TF (Transform) tree.
                     for link_name, pose_data in real_time_data["link_poses"].items():
                         translation = (pose_data[0], pose_data[1], pose_data[2])
                         rotation = (pose_data[3], pose_data[4], pose_data[5], -pose_data[6])
@@ -126,7 +126,6 @@ def mocap_to_stickman_ros1():
                     print('rigid body updated')
                 else:
                     print('unknow event')
-            # 睡眠以保持发布频率
             rate.sleep()
     except rospy.ROSInterruptException:
         pass
