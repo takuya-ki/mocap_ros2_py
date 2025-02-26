@@ -1,70 +1,70 @@
-# 介绍
+# Introduction
 
-本工程是基于python实现的ROS节点程序，实现下列功能：
+This project is a ROS node program implemented in Python, which achieves the following functions:
 
-1. 首先，从Noitom动捕软件获取人体动作数据（BVH格式）
+1. First, obtain human motion data (in BVH format) from the Noitom Mocap Software.
 
-2. 然后，将BVH数据转换成对应机器人关节模型的数据，该步骤称之为Retargeting
+2. Then, convert the BVH data into data corresponding to the robot joint model. This step is called Retargeting.
 
-   > 目前支持宇树科技的H1模型机器人的retargeting
+   > Currently, retargeting for the H1 model robot of Unitree Technology is supported.
 
-3. 最后，再把转换后的数据发送给仿真模拟器节点，用于驱动机器人模型。
+3. Finally, send the converted data to the simulation emulator node to drive the robot model.
 
-   > 除了驱动机器人模型，也可以驱动一个火柴人模型（该火柴人跟真人有一样的骨骼结构）
+   > In addition to driving the robot model, it can also drive a TF model (stickman has the same skeletal structure as a real human).
 
-结合仿真模拟器节点的工程，可以实现从Noitom公司提供的动捕软件获取数据并驱动机器人的功能。
+When combined with the project of the simulation emulator node, it can achieve the function of obtaining data from the Noitom Mocap Software and using it to drive the robot.
 
-下图展示了各个节点的数据流：
+The following figure shows the data flow of each node:
 
 ![nodes_arch](img/nodes_arch.png)
 
-- **Noitom Mocap Software**：Noitom公司提供专业的动捕软件（如Axis Studio，Hybrid Data Server等），负责提供基于真实人体的动捕数据
+- **Noitom Mocap Software**: Noitom Company provides professional motion capture software (such as Axis Studio, Hybrid Data Server, etc.), which is responsible for providing motion capture data based on real human bodies.
 
-  > 请联系info@noitom.com获取
+  > please contact info@noitom.com
 
-- **mocap_ros_py**：本工程，基于python实现的ROS节点程序，从动捕软件获取数据，retargeting后发送给仿真器。
+- **mocap_ros_py**:  This project. A ROS node program implemented in Python. It retrieves data from the Noitom Mocap Software. After retargeting, it sends the data to the simulator to drive the robot model. Alternatively, it can directly send the BVH data to drive the TF model(stickman). 
 
-  > 工程源码：https://github.com/pnmocap/mocap_ros_py.git
+  > source code: https://github.com/pnmocap/mocap_ros_py.git
 
-- **mocap_ros_cpp**：功能同mocap_ros_py，基于cpp实现。
+- **mocap_ros_cpp**: It has the same function as mocap_ros_py, but it is implemented in C++. 
 
-  > 工程源码：https://github.com/pnmocap/mocap_ros_cpp.git
+  > source code: https://github.com/pnmocap/mocap_ros_cpp.git
 
-- **mocap_ros_urdf**：机器人仿真模拟器节点工程，监听来自mocap_ros_py或mocap_ros_urdf的数据，驱动机器人
+- **mocap_ros_urdf**: A robot simulation emulator, listens to the data from mocap_ros_py or mocap_ros_urdf and drives the robot.
 
-  > 工程源码：https://github.com/pnmocap/mocap_ros_cpp.git
+  > source code:  https://github.com/pnmocap/mocap_ros_urdf.git
 
 
 
-# 目录结构
+# File Structure
 
-| 条目                      | 说明                                                         |
+| Item                      | Description                                                  |
 | ------------------------- | ------------------------------------------------------------ |
-| lib/                      | 包含了针对各个CPU架构的librobotapi动态库文件，它提供了接口函数，从Axis Studio获取动捕数据，同时也封装了从BVH数据转换为URDF格式的功能。 |
-| img/                      | 包含了本说明文档中用到的图片                                 |
-| unitree_h1/               | 存放针对宇树科技H1模型的regarting配置文件                    |
-| README.md                 | 本说明文档                                                   |
-| README_en.md              | 英文版说明文档                                               |
-| mocap_robotapi.py         | 封装了librobotapi库，从Axis Studio获取动捕数据，同时提供了BVH数据转换为符合URDF规范的json数据的功能。 |
-| requirements_ros1.txt     | 针对ROS1环境，本工程依赖的python库。                         |
-| requirements_ros2.txt     | 针对ROS2环境，本工程依赖的python库。                         |
-| mocap_to_robot_ros1.py    | 针对ROS1环境，做为一个ros node，调用mocap_robotapi库，转换BVH数据为URDF格式的json数据，publish 数据类型（JointState）到 topic（/joint_states），以驱动机器人模型。 |
-| mocap_to_robot_ros2.py    | 针对ROS2环境，功能与mocap_to_robot_ros1.py相同               |
-| mocap_to_stickman_ros1.py | 针对ROS1环境，做为一个ros node，调用mocap_robotapi库，将原始BVH数据publish 数据类型（Joy）到 topic（/remoter/action_list），以驱动robot的火柴人模型。 |
-| mocap_to_stickman_ros2.py | 针对ROS2环境，功能与mocap_to_stickman_ros1.py相同            |
+| lib/                      | It includes the `librobotapi` dynamic library files for various CPU architectures. This library provides interface functions to obtain motion capture data from Axis Studio and also encapsulates the functionality of converting BVH data to the URDF format. |
+| img/                      | It contains the images used in this instruction document.    |
+| unitree_h1/               | It stores the retargeting configuration files for the Unitree Technology H1 model. |
+| README.md                 | Readme in Chinese                                            |
+| README_en.md              | Readme in English                                            |
+| mocap_robotapi.py         | It encapsulates the `librobotapi` library to obtain motion capture data from Axis Studio. Meanwhile, it provides the function of converting BVH data into JSON data that complies with the URDF specification.分享 |
+| requirements_ros1.txt     | For the ROS 1 environment, the Python libraries that this project depends on.分享 |
+| requirements_ros2.txt     | For the ROS 2 environment, the Python libraries that this project depends on.分享 |
+| mocap_to_robot_ros1.py    | In the ROS 1 environment, as a ROS node, this project calls the `mocap_robotapi` library to convert BVH data into JSON data in the URDF format. Then it publishes the data of type `JointState` to the topic `/joint_states` to drive the robot model.分享 |
+| mocap_to_robot_ros2.py    | In the ROS 2 environment, the functionality is the same as that of `mocap_to_robot_ros1.py`. |
+| mocap_to_stickman_ros1.py | In the ROS 1 environment, as a ROS node, it calls the `mocap_robotapi` library to publish the original BVH data of the data type `Joy` to the topic `/remoter/action_list` to drive the stick - figure model of the robot. |
+| mocap_to_stickman_ros2.py | In the ROS 2 environment, the functionality is identical to that of the `mocap_to_stickman_ros1.py` script. |
 
-# 启动步骤
+# Launch Steps
 
-## 前提
+## Prerequisites
 
-- 首先找一台windows PC，安装好Axis Studio软件，并做好配置。
-- 其次找一台linux PC，安装好ROS环境。（ROS1或ROS2都可以）
-- 根据ROS1还是ROS2环境，启动对应的仿真模拟器节点，详见： [mocap_ros_urdf](https://github.com/pnmocap/mocap_ros_urdf.git)
-- 根据要驱动的模型是火柴人还是机器人，启动对应的ROS node
+- First, find a Windows PC, install the Axis Studio software, and complete the configuration.
+- Second, find a Linux PC and install the ROS environment. (Either ROS 1 or ROS 2 is acceptable.)
+- Depending on whether it is a ROS 1 or ROS 2 environment, start the corresponding simulation emulator node. For details, refer to: [mocap_ros_urdf](https://github.com/pnmocap/mocap_ros_urdf.git).
+- According to whether the model to be driven is a TF or a robotmodel, start the corresponding ROS node.
 
-## 下载安装本工程
+## Download and Install This Project
 
-登录安装了ROS的linux PC，下载本工程，并根据ROS环境安装依赖包。
+Log in to the Linux PC with ROS installed, download this project, and install the dependent packages according to the ROS environment.
 
 ```
 git clone https://github.com/pnmocap/mocap_ros_py.git
@@ -76,49 +76,49 @@ pip3 install -r requirements_ros2.txt
 ```
 
 
-## 配置动捕软件Axis Studio
+## Configure the Motion Capture Software: Axis Studio
 
-最新一代的动作捕捉软件支持 Perception Neuron Studio 和 Perception Neuron3（Pro）动作捕捉产品。点击下方的 “[下载](https://shopcdn.noitom.com.cn/software/9d68e93a50424cac8fbc6d6c9e5bd3da/Axis_Studio_nacs_x64_2_12_13808_2521_20241209183103543.zip)” 按钮，获取软件安装包程序。
+The latest generation of motion capture software supports the Perception Neuron Studio and Perception Neuron3 (Pro) motion capture products. Click the "[Download](https://shopcdn.noitom.com.cn/software/9d68e93a50424cac8fbc6d6c9e5bd3da/Axis_Studio_nacs_x64_2_12_13808_2521_20241209183103543.zip)" button below to obtain the software installation package.
 
-### 启动*Axis Studio*, 打开一个动作数据文件
+### Start *Axis Studio* and Open a Motion Data File
 
-此时能看到Axis Studio里的3D模型在运动，如下图所示：
+At this point, you can see the 3D model in Axis Studio moving, as shown in the following figure:
 
    [![img](img/launch_axis_studio.gif)](img/launch_axis_studio.gif)
 
-### 配置 *BVH Broadcasting*
+### Configure *BVH Broadcasting*
 
-打开设置对话框，选择BVH Broadcasting并使能：
+Open the settings dialog box, select BVH Broadcasting and enable it:
 
-其中Local Address填写运行Axis Studio软件的windows电脑IP，Destination Address填写运行ROS节点的Linux电脑IP。注意需要填写局域网IP，不要填写127.0.0.1这种回环IP。
+Fill in the "Local Address" with the IP address of the Windows computer running the Axis Studio software, and fill in the "Destination Address" with the IP address of the Linux computer running the ROS node. Note that you need to fill in the local area network IP address, not a loopback IP like 127.0.0.1.
 
-其余红框部分，需要严格按照图示填写。
+For the rest of the parts within the red frame, you need to fill them in strictly as shown in the figure.
 
 ![1740031721398](img/bvh_edit.png)
 
 
 
-##  启动并配置仿真模拟器节点
+## Start and Configure the Simulation Emulator Node
 
-这里的ROS URDF模型使用的是宇树科技的H1机器人模型。
+The ROS URDF model used here is the H1 robot model from Unitree Technology.
 
-请按照文档描述，启动并配置好仿真模拟器节点程序： https://github.com/pnmocap/mocap_ros_urdf.git。
+Please follow the description in the documentation to start and configure the simulation emulator node program: https://github.com/pnmocap/mocap_ros_urdf.git.
 
 
 
-## 启动本ROS节点程序
+## Start This ROS Node Program
 
-将对应urdf的retarget.json  copy到工作空间
+Copy the corresponding `retarget.json` file of the URDF to the workspace.
 
 ~~~
 cp -r path/to/mocap_ros_py/unitree_h1/retarget.json  mocap_ros_py/retarget.json
 ~~~
 
-根据需要，可以选择驱动火柴人模型或者机器人模型。
+You can choose to drive either the TF model or the robot model as needed.
 
-> 两者只能二选一
+> You can only choose one of the two.
 
-### 启动火柴人数据节点
+### Launch TF Data Node
 
 ```
 cd path/to/mocap_ros_py
@@ -127,7 +127,7 @@ or
 python mocap_to_stickman_ros2.py
 ```
 
-### 启动机器人数据节点
+### Launch RobotModel Data Node
 
 ```
 cd path/to/mocap_ros_py
