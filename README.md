@@ -78,7 +78,7 @@ pip3 install -r requirements_ros2.txt
 
 ## Configure the Motion Capture Software: Axis Studio
 
-The latest generation of motion capture software supports the Perception Neuron Studio and Perception Neuron3 (Pro) motion capture products. Click the "[Download](https://shopcdn.noitom.com.cn/software/9d68e93a50424cac8fbc6d6c9e5bd3da/Axis_Studio_nacs_x64_2_12_13808_2521_20241209183103543.zip)" button below to obtain the software installation package.
+The latest generation of motion capture software supports the Perception Neuron Studio and Perception Neuron3 (Pro) motion capture products. Please refer to the official website of Noitom Company for more information.
 
 ### Start *Axis Studio* and Open a Motion Data File
 
