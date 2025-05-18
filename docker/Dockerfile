@@ -22,9 +22,11 @@ RUN apt update -y && apt install -y --no-install-recommends \
     python3-pip \
     python3-tk \
     gnupg2 \
+    netcat \
     byobu \
     curl \
     wget \
+    lsof \
     git \
     vim \
     && rm -rf /var/lib/apt/lists/*
@@ -53,5 +55,8 @@ RUN echo "export XDG_RUNTIME_DIR=/tmp/runtime-futa" >> ~/.bashrc
 
 # Generate bash commands
 WORKDIR /root/ros2_ws/
+RUN echo "ping 100.80.147.72" >> ~/.bash_history
+RUN echo "nc -zvu 100.80.147.72 7001" >> ~/.bash_history
+RUN echo "lsof -i UDP:7012" >> ~/.bash_history
 RUN echo "ros2 run rviz2 rviz2 -d /root/ros2_ws/src/pnmocap_tutorials/rviz/demo.rviz" >> ~/.bash_history
-RUN echo "python3 mocap_to_stickman_ros2.py" >> ~/.bash_history
+RUN echo "cd /root/ros2_ws/src/pnmocap_tutorials/pnmocap_tutorials/ && python3 mocap_to_stickman.py" >> ~/.bash_history

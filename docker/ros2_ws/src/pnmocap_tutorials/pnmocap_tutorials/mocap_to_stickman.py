@@ -67,35 +67,36 @@ links_parent = {
     "LeftHandPinky2": "LeftHandPinky1",
     "LeftHandPinky3": "LeftHandPinky2"
 }
-def mocap_to_stickman_ros2():       
-  try:
-    rclpy.init()
-    node = Node("real_time_transform_publisher")
-    node.create_timer(0.1, lambda: send_link_poses_tf(node))
-    json_file_path = './retarget.json'
-    robot = MCPRobot(open(json_file_path).read())
-    app = MCPApplication()
-    settings = MCPSettings()
-    settings.set_udp(7012)
-    settings.set_bvh_rotation(0)
-    app.set_settings(settings)
-    app.open()
-    
-    br = StaticTransformBroadcaster(node)
-    def send_link_poses_tf(node):
-          evts = app.poll_next_event()
-          for evt in evts:
-              if evt.event_type == MCPEventType.AvatarUpdated:
-                  avatar = MCPAvatar(evt.event_data.avatar_handle)
-                  robot.update_robot(avatar)
-                  robot.run_robot_step()
-                  #print (robot.get_robot_ros_frame_json())
-                  
-                  # get realtime data
-                  real_time_data = json.loads(robot.get_robot_ros_frame_json()[0])
 
-                  # publish TF
-                  for link_name, pose_data in real_time_data["link_poses"].items():
+def mocap_to_stickman():       
+    try:
+        rclpy.init()
+        node = Node("real_time_transform_publisher")
+        node.create_timer(0.1, lambda: send_link_poses_tf(node))
+        json_file_path = './retarget.json'
+        robot = MCPRobot(open(json_file_path).read())
+        app = MCPApplication()
+        settings = MCPSettings()
+        settings.set_udp(7012)
+        settings.set_bvh_rotation(0)
+        app.set_settings(settings)
+        app.open()
+
+        br = StaticTransformBroadcaster(node)
+        def send_link_poses_tf(node):
+            evts = app.poll_next_event()
+            for evt in evts:
+                if evt.event_type == MCPEventType.AvatarUpdated:
+                    avatar = MCPAvatar(evt.event_data.avatar_handle)
+                    robot.update_robot(avatar)
+                    robot.run_robot_step()
+                    #print (robot.get_robot_ros_frame_json())
+                    
+                    # get realtime data
+                    real_time_data = json.loads(robot.get_robot_ros_frame_json()[0])
+
+                    # publish TF
+                    for link_name, pose_data in real_time_data["link_poses"].items():
                         t = TransformStamped()
                         t.header.stamp = node.get_clock().now().to_msg()
                         t.header.frame_id =  links_parent[link_name]
@@ -106,43 +107,43 @@ def mocap_to_stickman_ros2():
                         t.transform.translation.z = pose_data[2]
 
                         # rotation
-                        #quat = tf_transformations.quaternion_from_euler(0, 0, 0)
+                        # quat = tf_transformations.quaternion_from_euler(0, 0, 0)
                         t.transform.rotation.x = pose_data[3]
                         t.transform.rotation.y = pose_data[4]
                         t.transform.rotation.z = pose_data[5]
-                        t.transform.rotation.w = -pose_data[6]
+                        t.transform.rotation.w = pose_data[6]
                         br.sendTransform(t)
                     
-                  # publish
-                  t = TransformStamped()
-                  t.header.stamp = node.get_clock().now().to_msg()
-                  t.header.frame_id = 'world'
-                  t.child_frame_id = 'base_link'
+                    # publish
+                    t = TransformStamped()
+                    t.header.stamp = node.get_clock().now().to_msg()
+                    t.header.frame_id = 'world'
+                    t.child_frame_id = 'base_link'
 
-                  # translation
-                  t.transform.translation.x = real_time_data["root_pos_x"]
-                  t.transform.translation.y = real_time_data["root_pos_y"]
-                  t.transform.translation.z = real_time_data["root_pos_z"]
+                    # translation
+                    t.transform.translation.x = real_time_data["root_pos_x"]
+                    t.transform.translation.y = real_time_data["root_pos_y"]
+                    t.transform.translation.z = real_time_data["root_pos_z"]
 
-                  # rotation
-                  #quat = tf_transformations.quaternion_from_euler(0, 0, 0)
-                  t.transform.rotation.x = real_time_data["root_rot_x"]
-                  t.transform.rotation.y = real_time_data["root_rot_y"]
-                  t.transform.rotation.z = real_time_data["root_rot_z"]
-                  t.transform.rotation.w = -real_time_data["root_rot_w"]
-                  br.sendTransform(t)
-              
-              elif evt.event_type == MCPEventType.RigidBodyUpdated:
-                  print('rigid body updated')
-              else:
-                  print('unknow event')    
-    rclpy.spin(node)
-  except Exception as e:
-          node.get_logger().error(f"Error publishing joint state: {e}")      
-  finally:
-      app.close()
-      node.destroy_node()
-      rclpy.shutdown()  
+                    # rotation
+                    # quat = tf_transformations.quaternion_from_euler(0, 0, 0)
+                    t.transform.rotation.x = real_time_data["root_rot_x"]
+                    t.transform.rotation.y = real_time_data["root_rot_y"]
+                    t.transform.rotation.z = real_time_data["root_rot_z"]
+                    t.transform.rotation.w = real_time_data["root_rot_w"]
+                    br.sendTransform(t)
+                
+                elif evt.event_type == MCPEventType.RigidBodyUpdated:
+                    print('rigid body updated')
+                else:
+                    print('unknow event')    
+        rclpy.spin(node)
+    except Exception as e:
+            node.get_logger().error(f"Error publishing joint state: {e}")      
+    finally:
+        app.close()
+        node.destroy_node()
+        rclpy.shutdown()  
 
 if __name__ == '__main__':
-  mocap_to_stickman_ros2()
+    mocap_to_stickman()
