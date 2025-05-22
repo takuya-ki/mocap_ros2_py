@@ -1,4 +1,4 @@
-# mocap_ros_py
+# mocap_ros2_py
 
 [![support level: community](https://img.shields.io/badge/support%20level-community-lightgray.svg)](https://rosindustrial.org/news/2016/10/7/better-supporting-a-growing-ros-industrial-software-platform)
 ![repo size](https://img.shields.io/github/repo-size/takuya-ki/mocap_ros_py)
@@ -39,7 +39,7 @@
     nc -zvu 100.80.147.72 7001
     ```
     ```bash
-    git clone git@github.com:takuya-ki/mocap_ros_py.git --recursive --depth 1 && cd mocap_ros_py && COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker compose build --no-cache --parallel  
+    git clone git@github.com:takuya-ki/mocap_ros2_py.git --recursive --depth 1 && cd mocap_ros2_py && COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker compose build --no-cache --parallel  
     ```
 
 ## Usage with docker
