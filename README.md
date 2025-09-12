@@ -27,14 +27,17 @@
       <img src=image/inbound_rule_step3.png width=280><br>
       <img src=image/inbound_rule_step4.png width=280><br>
       <img src=image/inbound_rule_step5.png width=280><br>
-3. Set up the Axis Studio software by following [this](https://github.com/pnmocap/mocap_ros_py?tab=readme-ov-file#configure-the-motion-capture-software-axis-studio)  
+3. Install Axis Studio downloaded from [here](https://shop.noitom.com.cn/common/product_item/index.jhtml?productItemId=3)
+    - Note that if you download from other places, a license may be required to open the software
+5. Set up the Axis Studio by following [this](https://github.com/pnmocap/mocap_ros_py?tab=readme-ov-file#configure-the-motion-capture-software-axis-studio)  
     1. Make sure the network settings are configured as shown below:<br>
     <img src=image/network.png width=280><br>
     2. Enable the connection:<br>
     <img src=image/setting.png width=280><br>
     3. Perform calibration so the system correctly recognizes joint angles:<br>
     <img src=image/calibration.png width=280><br>
-4. Build the docker environment as below (if you use the docker, this must be set in docker container)  
+
+6. Build the docker environment as below (if you use the docker, this must be set in docker container)  
     ```bash
     nc -zvu 100.80.147.72 7001
     ```
