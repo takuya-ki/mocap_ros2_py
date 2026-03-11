@@ -136,7 +136,7 @@ def mocap_to_stickman():
                 elif evt.event_type == MCPEventType.RigidBodyUpdated:
                     print('rigid body updated')
                 else:
-                    print('unknow event')    
+                    print('unknown event')
         rclpy.spin(node)
     except Exception as e:
             node.get_logger().error(f"Error publishing joint state: {e}")      

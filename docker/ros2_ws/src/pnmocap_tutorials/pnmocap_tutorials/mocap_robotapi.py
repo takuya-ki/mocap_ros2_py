@@ -1,9 +1,8 @@
 from ctypes import *
 from collections import namedtuple
-from platform import *
+from platform import machine, system
 import time
 import os
-from docutils.parsers.rst.directives import encoding
 
 architecture = machine()
 so_files_path = None

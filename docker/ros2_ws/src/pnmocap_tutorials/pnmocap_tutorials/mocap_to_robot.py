@@ -5,8 +5,6 @@ import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import JointState
 
-from docutils.parsers.rst.directives import encoding
-
 def ros2_joint_state_publisher():       
     try:
         rclpy.init()
@@ -59,7 +57,7 @@ def ros2_joint_state_publisher():
                 elif evt.event_type == MCPEventType.RigidBodyUpdated:
                     print('rigid body updated')
                 else:
-                    print('unknow event')    
+                    print('unknown event')
         rclpy.spin(node)
     except Exception as e:
             node.get_logger().error(f"Error publishing joint state: {e}")      

@@ -17,7 +17,7 @@ services:
         volumes:
             # for USB devices
             - /dev:/dev
-            # to tansport X11 application (require xhost local:)
+            # to transport X11 application (require xhost local:)
             - /tmp/.X11-unix:/tmp/.X11-unix:rw
             # shared dirs
             - ./docker/ros2_ws/src:/root/ros2_ws/src
